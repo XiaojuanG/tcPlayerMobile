@@ -1,0 +1,245 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+    <title>播放器例子</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-tap-highlight" content="no">
+    <!--<meta http-equiv="content-security-policy" content="block-all-mixed-content">-->
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <!-- layim移动端 -->
+    <link rel="stylesheet" type="text/css" href="layim/css/layui.mobile.css">
+    <style type="text/css">
+      body .layim-title{display: none;}
+      body .layim-chat-main, body .layui-layim{top: 0}
+      body .layim-panel{position: fixed;top: 240px;}
+      body .layim-panel .layim-content{top: 240px;}
+      body .layim-chat-main{top: 240px;bottom: 50px; background: #fff;}
+      body .layim-chat-main ul li{margin-bottom: 0;}
+      body .layim-chat-main ul .layim-chat-system{margin: 5px 0 1px;}
+      body .layim-chat-footer{height: 40px;justify-content: space-between;}
+      body .layim-chat-send{display: inline;float: right;width: 80%;}
+      body .layim-chat-send input{height: 30px;width: 65%;}
+      body .layim-chat-send button{height: 30px;margin-left: 30px;}
+      /*body .layim-chat-text, .layim-chat-user{font-size: 8px;}*/
+      body .layim-chat-text{margin-top: 20px;padding: 0px 15px;}
+      /*body .layim-chat-user img{width: 20px;height: 20px;}*/
+      /*body .layim-chat-user cite{font-size: 8px;}*/
+      body .layim-chat-text:after{display:none;}
+      body .layim-chat-tool{display: inline;}
+      body .layim-layer{bottom: 60px;}
+      body .layim-chat-send button{padding: 0 10px;}
+      body .layui-m-layer{z-index: 1;}
+      .vcp-error-tips{display: none!important;}
+      }
+    </style>
+</head>
+<body>
+<div id="video-container" style="width: 100%;height: 240px;z-index: 99999;">
+</div>
+<!--Polyfill-->
+<!--[if lt IE 9]>
+<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/libs/es5-shim.js"></script>
+<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/libs/es5-sham.js"></script>
+<![endif]-->
+<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.1.js"></script>
+<script>
+    (function () {
+        function getParams(name) {
+            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return decodeURIComponent(r[2]);
+            }
+            return null;
+        }
+
+        function getPathParams() {
+            var path = location.pathname.split('/');
+            if (path[1] == 'vod-player') {
+                return {
+                    'path': location.origin + path.slice(0, 4).join('/'),
+                    'appid': path[2],
+                    'fileid': path[3]
+                }
+            } else {
+                return null;
+            }
+        }
+
+        var rtmp = getParams('rtmp'),
+            flv = getParams('flv'),
+            m3u8 = getParams('m3u8'),
+            mp4 = getParams('mp4'),
+            live = (getParams('live') == 'true' ? true : false),
+            coverpic = getParams('coverpic'),
+            width = getParams('width'),
+            height = getParams('height'),
+            volume = getParams('volume'),
+            flash = (getParams('flash') == 'true' || !getParams('flash') ? true : false),
+            h5_flv = (getParams('h5_flv') == 'true' ? true : false),
+            autoplay = (getParams('autoplay') == 'true' ? true : false),
+            flashUrl = (function () {
+                var params = getPathParams();
+                if (params) {
+                    return params.path + '/player/release/QCPlayer.swf';
+                }
+                return '//imgcache.qq.com/open/qcloud/video/player/release/QCPlayer.swf'
+            })(),
+            log = getParams('log');
+        /**
+         * 视频类型播放优先级
+         * mobile ：m3u8>mp4
+         * PC ：RTMP>flv>m3u8>mp4
+         */
+        var options = {
+            rtmp: rtmp,
+            flv: flv,
+            m3u8: m3u8 || 'http://live.myun.tv/watch/nkb9j0.m3u8',
+            mp4: mp4,
+            volume: volume || 0.5,
+            live: live,
+            coverpic: {"style":"stretch", "src":"images/video.jpg"},
+            flash: flash,
+            flashUrl: flashUrl,
+            h5_flv: h5_flv,
+            systemFullscreen: true,
+            // x5_type:'h5',
+            wording: {
+                
+            },
+            listener: function (msg) {
+                //  console.log('listener',msg);
+                // if(msg.type == 'error'){
+                //    document.getElementsByTagName('video')[0].style.background='url(images/poster.jpg) no-repeat 100% 0/100% 100% ';
+                //    document.querySelectorAll('.vcp-poster')[0].style.display='none';
+
+                // }
+            }
+
+
+        };
+        window.tcplayer = new TcPlayer('video-container', options);
+        
+
+    })();
+</script>
+<!-- layim移动版 -->
+<script type="text/javascript" src="layim/layui.js"></script>
+<script type="text/javascript">
+    layui.config({
+      version: true
+    }).use('mobile', function(){
+      var mobile = layui.mobile
+      ,layim = mobile.layim
+      ,layer = mobile.layer;
+      
+      //演示自动回复
+      var autoReplay = [
+        '您好，我现在有事不在，一会再和您联系。', 
+        '你没发错吧？face[微笑] ',
+        '洗澡中，请勿打扰，偷窥请购票，个体四十，团体八折，订票电话：一般人我不告诉他！face[哈哈] ',
+        '你好，我是主人的美女秘书，有什么事就跟我说吧，等他回来我会转告他的。face[心] face[心] face[心] ',
+        'face[威武] face[威武] face[威武] face[威武] ',
+        '<（@￣︶￣@）>',
+        '你要和我说话？你真的要和我说话？你确定自己想说吗？你一定非说不可吗？那你说吧，这是自动回复。',
+        'face[黑线]  你慢慢说，别急……',
+        '(*^__^*) face[嘻嘻] ，是贤心吗？'
+      ];
+      
+      layim.config({
+        
+        
+       init: {
+          //我的信息
+          mine: {
+            "username": "纸飞机" //我的昵称
+            ,"id": 123 //我的ID
+            ,"avatar": "http://tvax1.sinaimg.cn/crop.0.0.300.300.180/006Iv8Wjly8ff7ghbigcij308c08ct8i.jpg" //我的头像
+            ,"sign": "懒得签名"
+          }
+          ,
+        }
+
+      });
+      
+      //创建一个会话
+      
+      layim.chat({
+        id: 111111
+        ,name: '许闲心'
+        ,type: 'group' //friend、group等字符，如果是group，则创建的是群聊
+        ,avatar: 'http://tp1.sinaimg.cn/1571889140/180/40030060651/1'
+      });
+      
+      
+      
+      //查看聊天信息
+      layim.on('detail', function(data){
+        //console.log(data); //获取当前会话对象
+        layim.panel({
+          title: data.name + ' 聊天信息' //标题
+          ,tpl: '<div style="padding: 10px;">自定义模版，<a href="http://www.layui.com/doc/modules/layim_mobile.html#ondetail" target="_blank">参考文档</a></div>' //模版
+          ,data: { //数据
+            test: '么么哒'
+          }
+        });
+      });
+      
+      
+
+      
+     
+      //监听发送消息
+      layim.on('sendMessage', function(data){
+        var To = data.to;
+        //console.log(data);
+
+        //演示自动回复
+        setTimeout(function(){
+          var obj = {};
+          if(To.type === 'group'){
+            obj = {
+              username: '模拟群员'+(Math.random()*100|0)
+              ,avatar: layui.cache.dir + 'images/face/'+ (Math.random()*72|0) + '.gif'
+              ,id: To.id
+              ,type: 'group'
+              ,content: autoReplay[Math.random()*9|0]
+            }
+          } else {
+            obj = {
+              username: To.name
+              ,avatar: To.avatar
+              ,id: To.id
+              ,type: To.type
+              ,content: autoReplay[Math.random()*9|0]
+            }
+          }
+          layim.getMessage(obj);
+        }, 3000);
+      });
+      
+      //监听查看更多记录
+      layim.on('chatlog', function(data, ul){
+        console.log(data);
+        layim.panel({
+          title: '与 '+ data.name +' 的聊天记录' //标题
+          ,tpl: '<div style="padding: 10px;">这里是模版，{{d.data.test}}</div>' //模版
+          ,data: { //数据
+            test: 'Hello'
+          }
+        });
+      });
+      
+      //模拟"更多"有新动态
+      layim.showNew('More', true);
+      layim.showNew('find', true);
+    });
+</script>
+</body>
+</html>
