@@ -17,9 +17,9 @@
     <style type="text/css">
       body .layim-title{display: none;}
       body .layim-chat-main, body .layui-layim{top: 0}
-      body .layim-panel{position: fixed;top: 240px;}
-      body .layim-panel .layim-content{top: 240px;}
-      body .layim-chat-main{top: 240px;bottom: 50px; background: #fff;}
+      body .layim-panel{position: fixed;top: 280px;}
+      body .layim-panel .layim-content{top: 280px;}
+      body .layim-chat-main{top: 280px;bottom: 50px; background: #fff;}
       body .layim-chat-main ul li{margin-bottom: 0;}
       body .layim-chat-main ul .layim-chat-system{margin: 5px 0 1px;}
       body .layim-chat-footer{height: 40px;justify-content: space-between;}
@@ -43,7 +43,7 @@
     </style>
 </head>
 <body>
-  <div class="bg" id="bg" style="background-color: rgba(0,0,0,.7);position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 9;">
+  <div class="bg" id="bg" style="background-color: rgba(0,0,0,.7);position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 9;display: none;">
     <div class="verifycode-wrap" style="margin:0 auto;-webkit-border-radius: 8px;-moz-border-radius: 8px;border-radius: 8px;width: 24rem;height: 16rem;text-align: center;background-color: #F2F2F2;margin-top:20%;" >
       <p class="title out-title" style="width: 100%;height: 4.8rem;border-bottom: solid 1px #E6E6E6;line-height: 4.8rem;font-size: 1.5rem;color: #040405;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">欢迎观看本直播</p>
       <input type="text" id="verifinput" name="verifinput" placeholder="请输入验证码" class="red-border" style="width: 21rem;height: 3.4rem;font-size: 1.4rem;text-indent:1rem;margin-top: 1.7rem;margin-bottom: 1rem;padding: 0;border: none;">
@@ -53,11 +53,58 @@
   </div>
 <div id="video-container" style="width: 100%;height: 240px;z-index: 99999;">
 </div>
-<!--Polyfill-->
-<!--[if lt IE 9]>
-<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/libs/es5-shim.js"></script>
-<script src="//imgcache.qq.com/open/qcloud/video/vcplayer/libs/es5-sham.js"></script>
-<![endif]-->
+<div id="notice" class="notice" >
+        <div id="notice-title" class="notice-title">
+            <ul>
+                <li class="select"><a href="#" class="envelope">聊天互动</a></li>
+                <li class=""><a href="#">聊天</a></li>
+                <li class=""><a href="#">互动</a></li>
+                <li class=""><a href="#">应用</a></li>
+            </ul>
+        </div>
+        <div id="notice-content" class="notice-content">
+            <div class="model" style="display:block;">
+                
+            </div>
+            <div class="model" style="display:none;">
+                <ul>
+                    <li><a href="">聊天</a></li>
+                    <li><a href="">聊天</a></li>
+                </ul>
+            </div>
+            <div class="model" style="display:none;">
+                <ul>
+                    <li><a href="">互动</a></li>
+                    <li><a href="">互动</a></li>
+                </ul>
+            </div>
+            <div class="model" style="display:none;">
+                <ul>
+                    <li><a href="">聊天互动</a></li>
+                    <li><a href="">聊天互动</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 红包 -->
+    <div class="envelope-detail-wrap" style="display: none;">
+      <div class="top">
+        <span>
+          <span>测试直播项目</span>
+          <i class="name-ext">的红包</i>
+        </span>
+        <i class="reward-icon envelope-close">X</i>
+      </div>
+      <button class="redbutton" type="领取红包">抢红包</button>
+      <P class="slogan">恭喜发财！大吉大利！</P>
+      <div class="mid">
+        <a id="luck">看看大家的手气></a>
+      </div>
+    </div>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/tabscript.js"></script>
+<!-- 红包 -->
+<script type="text/javascript" src="js/envelope.js"></script>
 <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.1.js"></script>
 <script>
     (function () {
@@ -253,10 +300,10 @@
     });
 </script>
 <!-- layer验证码 -->
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="layer.mobile/layer_mobile/layer.js"></script>
 <script>
-  var verification = false;
+  var verification = true;
   if(verification){
     $('#bg').css('display','none');
   }else{
@@ -275,7 +322,7 @@
     })
   }
 
-</script>
+</script> -->
 
 </body>
 </html>
